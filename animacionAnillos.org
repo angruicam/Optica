@@ -1,0 +1,59 @@
+#+BEGIN_SRC gnuplot :exports results :eval yes
+  reset
+
+  # Terminal
+  set terminal gif animate size 600,600 delay 10 font "Latin Modern Roman,14"
+  set output 'anillosCrec2.gif'
+  set title font "Latin Modern Roman,14"
+  set title "Patr{\363}n de interferencia - Interfer{\363}metro de Michelson"
+
+  # Estilo
+  set size square
+  set view map
+  set pm3d
+  set isosamples 200, 200
+  unset colorbox
+  unset surface
+  unset key
+  unset tics
+  set border lw 1
+
+  # Dominio espacial
+  f = 6*sqrt(3) # Distancia focal (cm)
+  Rmax = 6 # Radio máximo del patrón (cm)
+
+  set xrange [-Rmax:Rmax]
+  set yrange [-Rmax:Rmax]
+  # Mapa de color
+  set palette defined (0 "black", 1 "#ff1a00")
+  set cbrange [0:4]
+
+  # Parámetros físicos
+  I0  = 1.0 # Intensidad inicial
+  lamb = 632.8e-9 # Longitud de onda (m)
+  d0 = 0*0.5*lamb # Diferencia entre los brazos inicial (m)
+
+  # Funciones
+  r(x,y) = sqrt(x*x+y*y)
+  theta(x,y) = r(x,y)/f
+
+  do for [i=0:500] {
+
+      m = 0.1*i # Orden interferencial
+      d = 0.1*i*0.5*lamb - d0 # Diferencia de longitud entre los brazos (m)
+
+      str = sprintf('{/:Italic m} = %.1f, {/:Italic d} = %.2f {/Symbol m}m',m,d*1e6)
+      str2 = sprintf('{/:Italic D}_{/:Italic espejos} = %.2f {/Symbol m}m, {/:Italic D}_{/:Italic tornillo} = %.2f {/Symbol m}m',(d-d0)*1e6,1e6*(d-d0)/0.1808)
+      unset label  
+      set label str at screen 0.5,0.1 center front textcolor rgb 'black'
+      set label str2 at screen 0.5,0.05 center front textcolor rgb 'black'
+
+      I(x,y) = 4*I0*(cos(m*pi*(1-0.5*theta(x,y)*theta(x,y))-0.5*pi))**2
+
+      splot I(x,y)
+  }
+
+  unset output
+#+END_SRC
+
+#+RESULTS:
