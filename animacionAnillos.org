@@ -2,8 +2,8 @@
   reset
 
   # Terminal
-  set terminal gif animate size 600,600 delay 10 font "Latin Modern Roman,14"
-  set output 'anillosCrec2.gif'
+  set terminal gif animate size 450,450 delay 10 font "Latin Modern Roman,14"
+  set output 'anillosCrec.gif'
   set title font "Latin Modern Roman,14"
   set title "Patr{\363}n de interferencia - Interfer{\363}metro de Michelson"
 
